@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Tebak Angka
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <script src="vue.js"></script>
+</head>
+
+<body>
+    <div class="card text-center" id="app">
+        <h1>Tebak Angka 1-10</h1>
+
+        <form id="app" @submit="checkForm" action="https://vuejs.org/" method="post">
+            <p>
+                <label for="angka">Angka</label>
+                <input :disabled="clicked" id="angka" v-model="angkaInput" type="number" name="age" min="0">
+            </p>
+            <p>
+                <input :disabled="clicked" type="submit" value="Guess it">
+            </p>
+
+            <p v-if="jawaban == true && angkaInput != null && clicked == true">
+                You're Lucky!
+                <button @click="mulai" type="reset">Restart</button>
+            </p>
+            <div v-else-if="jawaban == false && angkaInput != null && clicked == true">
+                Wrong guess!
+                <p v-if="counter > 0">You have {{ counter }} chance again!</p>
+                <p v-if="counter == 0">Game Over</p>
+
+                <button @click="mulai" type="reset">Try Again</button>
+            </div>
+            <div class="card">
+                <div class="card-body" style="margin: auto;">
+                    {{ theo.nama }} | {{ theo.npm }} | {{ theo.kelas }}
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            theo: {
+                nama: 'Theodorus Tapilatu',
+                npm: '180709806',
+                kelas: 'Kelas PAW C',
+            },
+            counter: 3,
+            clicked: false,
+            jawaban: false,
+            angkaBenar: 7,
+            angkaInput: null
+        },
+        methods: {
+            checkForm: function(e) {
+                if (this.angkaBenar == this.angkaInput) {
+                    this.jawaban = true;
+                    this.clicked = true;
+                    this.counter = 3;
+                } else {
+                    this.jawaban = false;
+                    this.clicked = true;
+                    this.counter--;
+                }
+                e.preventDefault();
+            },
+            mulai() {
+                this.jawaban = false;
+                this.clicked = false;
+                this.angkaInput = null;
+            }
+        },
+    });
+</script>
+
+</html>
