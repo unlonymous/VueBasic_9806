@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List </title>
+    <link rel="stylesheet" href="tugas_style.css">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <canvas id="snow"></canvas>
+    <script src="tugas_js.js"></script>
+    <script src="vue.js"></script>
+    <br>
+
+</head>
+
+<body>
+    <div class="center">
+        <div class="container">
+            <div id="app">
+                <div class="text">
+                    <h1 class="">My Todo List</h1>
+                </div>
+
+                <div class="card">
+                    <div class="flex">
+                        <input v-model="newItem" @keyup.enter="addItem" placeholder="Add new todo - Name" />
+                    </div>
+
+                    <div class="flex">
+                        <select v-model="newPriority" @keyup.enter="addItem">
+              <option value="" selected>Add new todo - Priority</option>
+              <option value="Penting">Penting</option>
+              <option value="Biasa">Biasa</option>
+              <option value="Tidak Penting">Tidak Penting</option>
+            </select>
+                    </div>
+
+                    <div class="flex">
+                        <input v-model="newDesc" @keyup.enter="addItem" placeholder="Add new todo - Descciption" />
+                    </div>
+
+                    <div class="flex">
+                        <button @click="addItem" :disabled="newItem.length === 0 || newPriority.length === 0 || newDesc.length === 0" style="width: 100%;">+ Add New Task +</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-inner">
+                        <h2>Todo</h2>
+                        <ul class="list">
+                            <li class="list-item" :class="{completed: item.completed}" v-for="item in reversedItems">
+                                <div class="list-item-toggle" @click="toggleCompleted(item)"></div>
+
+                                <p>
+                                    <span>Name : {{ item.name }}<span></span><br>
+                                    <span>Priority : {{ item.priority }}</span><br>
+                                    <span>Desc : {{ item.desc }}</span>
+                                </p>
+
+                                <div class="list-item-delete" @click="removeItem(item)">X</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <p>{{mhs.nama}} | {{mhs.npm}} | {{mhs.kelas}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                newItem: '',
+                newPriority: '',
+                newDesc: '',
+                mhs: {
+                    nama: 'Theodorus Tapilatu',
+                    npm: 180709806,
+                    kelas: 'PAW Kelas C',
+                },
+                items: [],
+            },
+            computed: {
+                reversedItems() {
+                    return this.items.slice(0).reverse();
+                },
+            },
+            methods: {
+                addItem: function() {
+                    this.items.push({
+                        id: this.items.length + 1,
+                        name: this.newItem,
+                        priority: this.newPriority,
+                        desc: this.newDesc,
+                        completed: false,
+                    });
+                    this.newItem = '';
+                    this.newPriority = '';
+                    this.newDesc = '';
+                },
+                toggleCompleted: function(item) {
+                    item.completed = !item.completed;
+                },
+                removeItem: function(item) {
+                    this.items = this.items.filter((newItem) => newItem.name !== item.name);
+                },
+            },
+        });
+    </script>
+</body>
+
+</html>
